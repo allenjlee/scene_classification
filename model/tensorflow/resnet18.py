@@ -33,9 +33,9 @@ def batch_norm_layer(x, train_phase, scope_bn):
     # scope=scope_bn)
     dimension = x.get_shape().as_list()[-1]
     mean, variance = tf.nn.moments(x, axes=[0, 1, 2])
-    beta = tf.get_variable('beta', dimension, tf.float32,
+    beta = tf.get_variable('beta' + scope_bn, dimension, tf.float32,
                                initializer=tf.constant_initializer(0.0, tf.float32))
-    gamma = tf.get_variable('gamma', dimension, tf.float32,
+    gamma = tf.get_variable('gamma' + scope_bn, dimension, tf.float32,
                                 initializer=tf.constant_initializer(1.0, tf.float32))
     bn_layer = tf.nn.batch_normalization(x, mean, variance, beta, gamma, 0.001)
 

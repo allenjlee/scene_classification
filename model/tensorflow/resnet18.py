@@ -6,7 +6,7 @@ from DataLoader import *
 from DataLoader_test import *
 
 # Dataset Parameters
-batch_size = 32
+batch_size = 128
 load_size = 128
 fine_size = 112 # image size, 112x112x3
 c = 3
@@ -270,7 +270,7 @@ with tf.Session() as sess:
         sess.run(init)
     print('training_iters', training_iters)
     print('learning_rate', learning_rate)
-    
+
     step = 0
 
     while step < training_iters:

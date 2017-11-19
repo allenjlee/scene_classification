@@ -6,7 +6,7 @@ from DataLoader import *
 from DataLoader_test import *
 
 # Dataset Parameters
-batch_size = 128
+batch_size = 64
 load_size = 128
 fine_size = 112 # image size, 112x112x3
 c = 3

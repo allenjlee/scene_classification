@@ -15,9 +15,9 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 # Training Parameters
 learning_rate = 0.0001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 1
+training_iters = 20000
 step_display = 50
-step_save = 1000
+step_save = 10000
 path_save = 'resnet_18_2/'
 start_from = ''
 
@@ -268,6 +268,8 @@ with tf.Session() as sess:
         saver.restore(sess, tf.train.latest_checkpoint("resnet_18_2/"))
     else:
         sess.run(init)
+    print('training_iters', training_iters)
+    print('learning_rate', learning_rate)
     
     step = 0
 
@@ -346,7 +348,7 @@ with tf.Session() as sess:
 
         for r in res:
             test_img_lab = test_img_lab + " " + str(r)
-        print (test_img_lab)
+        # print (test_img_lab)
         outpt.write(test_img_lab + "\n")
     outpt.close()
 

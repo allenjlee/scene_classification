@@ -13,13 +13,13 @@ c = 3
 data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
-learning_rate = 0.00001
+learning_rate = 0.0001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 10000
+training_iters = 1
 step_display = 50
-step_save = 5000
-path_save = 'vgg_19_results_test/'
-start_from = 'True'
+step_save = 1000
+path_save = 'resnet_18_2/'
+start_from = ''
 
 if not os.path.exists(path_save):
     os.makedirs(path_save)
@@ -157,7 +157,7 @@ def resnet_18(x, train_phase):
     conv17 += conv15
 
     # output: 7x7         1 avg pooling
-    pool2 = tf.nn.pool(conv17, [1, 3, 3, 1], 'AVG', padding='SAME', strides=[1,1,1,1])
+    pool2 = tf.nn.avg_pool(conv17, ksize=[1, 3, 3, 1], strides=[1,1,1,1], padding='SAME')
 
     # output: 100         1 fully-connected layer output 100 (7*7*512, 100)
     out = tf.reshape(pool2, [-1, weights['wo'].get_shape().as_list()[0]])
@@ -238,8 +238,8 @@ saver = tf.train.Saver()
 with tf.Session() as sess:
     # Initialization
     if len(start_from)>1:
-        saver = tf.train.import_meta_graph('-40000.meta')
-        saver.restore(sess, tf.train.latest_checkpoint("vgg_19_results_1/"))
+        saver = tf.train.import_meta_graph('')
+        saver.restore(sess, tf.train.latest_checkpoint("resnet_18_2/"))
     else:
         sess.run(init)
     
@@ -302,7 +302,7 @@ with tf.Session() as sess:
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
 
     print('Evaluating on test set...')
-    outpt = open('allenlee.test.pred.txt', 'w')
+    outpt = open('allenlee.resnet18.pred.txt', 'w')
     test_num_batch = loader_test.size()
     loader_test.reset()
 

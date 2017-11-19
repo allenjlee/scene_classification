@@ -18,7 +18,7 @@ learning_rate = 0.0001
 training_iters = 20000
 step_display = 50
 step_save = 10000
-path_save = 'resnet_18_3/'
+path_save = 'resnet_18_3_bn/'
 start_from = ''
 
 if not os.path.exists(path_save):
@@ -344,7 +344,7 @@ with tf.Session() as sess:
     # Initialization
     if len(start_from)>1:
         saver = tf.train.import_meta_graph('')
-        saver.restore(sess, tf.train.latest_checkpoint("resnet_18_2/"))
+        saver.restore(sess, tf.train.latest_checkpoint("resnet_18_3_bn/"))
     else:
         sess.run(init)
     print('training_iters', training_iters)
@@ -409,7 +409,7 @@ with tf.Session() as sess:
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
 
     print('Evaluating on test set...')
-    outpt = open('allenlee.resnet34.pred.txt', 'w')
+    outpt = open('allenlee.resnet34_bn.pred.txt', 'w')
     test_num_batch = loader_test.size()
     loader_test.reset()
 

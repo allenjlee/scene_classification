@@ -163,7 +163,7 @@ def resnet_34(x, train_phase):
     conv12 = batch_norm_layer(conv12, train_phase, 'bn12')
     conv12 = tf.nn.relu(conv12)
 
-    conv13 = tf.nn.conv2d(conv13, weights['wc13'], strides=[1, 1, 1, 1], padding='SAME')
+    conv13 = tf.nn.conv2d(conv12, weights['wc13'], strides=[1, 1, 1, 1], padding='SAME')
     conv13 = batch_norm_layer(conv13, train_phase, 'bn13')
     conv13 = tf.nn.relu(conv13)
     conv13 += conv11
@@ -223,7 +223,7 @@ def resnet_34(x, train_phase):
     conv24 = batch_norm_layer(conv24, train_phase, 'bn24')
     conv24 = tf.nn.relu(conv24)
 
-    conv25 = tf.nn.conv2d(conv25, weights['wc25'], strides=[1, 1, 1, 1], padding='SAME')
+    conv25 = tf.nn.conv2d(conv24, weights['wc25'], strides=[1, 1, 1, 1], padding='SAME')
     conv25 = batch_norm_layer(conv25, train_phase, 'bn25')
     conv25 = tf.nn.relu(conv25)
     conv25 += conv23

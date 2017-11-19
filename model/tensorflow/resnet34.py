@@ -69,11 +69,11 @@ def resnet_34(x, train_phase):
         'wc17': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
         'wc18': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
         'wc19': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
-        'wc20': tf.Variable(tf.random_normal([3, 3, 128, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
+        'wc20': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
         'wc21': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
         'wc22': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
         'wc23': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
-        'wc24': tf.Variable(tf.random_normal([3, 3, 128, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
+        'wc24': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
         'wc25': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
         'wc26': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
         'wc27': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4

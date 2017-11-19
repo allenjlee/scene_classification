@@ -145,13 +145,13 @@ def resnet_34(x, train_phase):
     conv8 = batch_norm_layer(conv8, train_phase, 'bn8')
     conv8 = tf.nn.relu(conv8)
 
-    conv9 = tf.nn.conv2d(conv9, weights['wc9'], strides=[1, 1, 1, 1], padding='SAME')
+    conv9 = tf.nn.conv2d(conv8, weights['wc9'], strides=[1, 1, 1, 1], padding='SAME')
     conv9 = batch_norm_layer(conv9, train_phase, 'bn9')
     conv9 = tf.nn.relu(conv9)
     conv9 += conv7_branch #size mismatch
 
     conv10 = tf.nn.conv2d(conv9, weights['wc10'], strides=[1, 1, 1, 1], padding='SAME')
-    conv10 = batch_norm_layer(conv8, train_phase, 'bn10')
+    conv10 = batch_norm_layer(conv10, train_phase, 'bn10')
     conv10 = tf.nn.relu(conv10)
 
     conv11 = tf.nn.conv2d(conv10, weights['wc11'], strides=[1, 1, 1, 1], padding='SAME')

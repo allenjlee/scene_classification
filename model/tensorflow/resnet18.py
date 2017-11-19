@@ -48,19 +48,29 @@ def resnet_18(x, train_phase):
         'wc2': tf.Variable(tf.random_normal([3, 3, 64, 64], stddev=np.sqrt(2. / (3 * 3 * 64)))),  # 2
         'wc3': tf.Variable(tf.random_normal([3, 3, 64, 64], stddev=np.sqrt(2. / (3 * 3 * 64)))),  # 2
         'wc4': tf.Variable(tf.random_normal([3, 3, 64, 64], stddev=np.sqrt(2. / (3 * 3 * 64)))),  # 2
-        'wc5': tf.Variable(tf.random_normal([3, 3, 64, 128], stddev=np.sqrt(2. / (3 * 3 * 64)))),  # 2
-        'wc6': tf.Variable(tf.random_normal([3, 3, 128, 128], stddev=np.sqrt(2. / (3 * 3 * 128)))),  # 3
+        'wc5': tf.Variable(tf.random_normal([3, 3, 64, 64], stddev=np.sqrt(2. / (3 * 3 * 64)))),  # 2
+
+        'wc5a': tf.Variable(tf.random_normal([3, 3, 64, 128], stddev=np.sqrt(2. / (3 * 3 * 64)))), # 2a
+
+        'wc6': tf.Variable(tf.random_normal([3, 3, 64, 128], stddev=np.sqrt(2. / (3 * 3 * 128)))),  # 3
         'wc7': tf.Variable(tf.random_normal([3, 3, 128, 128], stddev=np.sqrt(2. / (3 * 3 * 128)))),  # 3
         'wc8': tf.Variable(tf.random_normal([3, 3, 128, 128], stddev=np.sqrt(2. / (3 * 3 * 128)))),  # 3
-        'wc9': tf.Variable(tf.random_normal([3, 3, 128, 256], stddev=np.sqrt(2. / (3 * 3 * 128)))),  # 3
-        'wc10': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
+        'wc9': tf.Variable(tf.random_normal([3, 3, 128, 128], stddev=np.sqrt(2. / (3 * 3 * 128)))),  # 3
+
+        'wc9a': tf.Variable(tf.random_normal([3, 3, 128, 256], stddev=np.sqrt(2. / (3 * 3 * 128)))), # 3a
+
+        'wc10': tf.Variable(tf.random_normal([3, 3, 128, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
         'wc11': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
         'wc12': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
-        'wc13': tf.Variable(tf.random_normal([3, 3, 256, 512], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
-        'wc14': tf.Variable(tf.random_normal([3, 3, 512, 512], stddev=np.sqrt(2. / (3 * 3 * 512)))),  # 5
+        'wc13': tf.Variable(tf.random_normal([3, 3, 256, 256], stddev=np.sqrt(2. / (3 * 3 * 256)))),  # 4
+
+        'wc13a': tf.Variable(tf.random_normal([3, 3, 256, 512], stddev=np.sqrt(2. / (3 * 3 * 256)))), # 4a
+
+        'wc14': tf.Variable(tf.random_normal([3, 3, 256, 512], stddev=np.sqrt(2. / (3 * 3 * 512)))),  # 5
         'wc15': tf.Variable(tf.random_normal([3, 3, 512, 512], stddev=np.sqrt(2. / (3 * 3 * 512)))),  # 5
         'wc16': tf.Variable(tf.random_normal([3, 3, 512, 512], stddev=np.sqrt(2. / (3 * 3 * 512)))),  # 5
         'wc17': tf.Variable(tf.random_normal([3, 3, 512, 512], stddev=np.sqrt(2. / (3 * 3 * 512)))),  # 5
+
 
         'wo': tf.Variable(tf.random_normal([7*7*512, 100], stddev=np.sqrt(2./(7*7*512)))),
     }
@@ -99,6 +109,12 @@ def resnet_18(x, train_phase):
     conv5 = tf.nn.relu(conv5)
     conv5 += conv3
 
+    # conv5 size fix for next residual add
+    conv5_branch = tf.nn.conv2d(conv5, weights['wc5a'], strides=[1, 2, 2, 1], padding='SAME')
+    conv5_branch = batch_norm_layer(conv5_branch, train_phase, 'bn5a')
+    conv5_branch = tf.nn.relu(conv5_branch)
+
+
     # output: 28x28       4 3x3 conv, 128, /2 on first
     conv6 = tf.nn.conv2d(conv5, weights['wc6'], strides=[1, 2, 2, 1], padding='SAME')
     conv6 = batch_norm_layer(conv6, train_phase, 'bn6')
@@ -107,7 +123,7 @@ def resnet_18(x, train_phase):
     conv7 = tf.nn.conv2d(conv6, weights['wc7'], strides=[1, 1, 1, 1], padding='SAME')
     conv7 = batch_norm_layer(conv7, train_phase, 'bn7')
     conv7 = tf.nn.relu(conv7)
-    conv7 += conv5 #size mismatch
+    conv7 += conv5_branch #size mismatch
 
     conv8 = tf.nn.conv2d(conv7, weights['wc8'], strides=[1, 1, 1, 1], padding='SAME')
     conv8 = batch_norm_layer(conv8, train_phase, 'bn8')
@@ -118,6 +134,11 @@ def resnet_18(x, train_phase):
     conv9 = tf.nn.relu(conv9)
     conv9 += conv7
 
+    # conv9 size fix for next residual add
+    conv9_branch = tf.nn.conv2d(conv9, weights['wc9a'], strides=[1, 2, 2, 1], padding='SAME')
+    conv9_branch = batch_norm_layer(conv9_branch, train_phase, 'bn9a')
+    conv9_branch = tf.nn.relu(conv9_branch)
+
     # output: 14x14       4 3x3 conv, 256, /2 on first
     conv10 = tf.nn.conv2d(conv9, weights['wc10'], strides=[1, 2, 2, 1], padding='SAME')
     conv10 = batch_norm_layer(conv10, train_phase, 'bn10')
@@ -126,7 +147,7 @@ def resnet_18(x, train_phase):
     conv11 = tf.nn.conv2d(conv10, weights['wc11'], strides=[1, 1, 1, 1], padding='SAME')
     conv11 = batch_norm_layer(conv11, train_phase, 'bn11')
     conv11 = tf.nn.relu(conv11)
-    conv11 += conv9 #size mismatch
+    conv11 += conv9_branch #size mismatch
 
     conv12 = tf.nn.conv2d(conv11, weights['wc12'], strides=[1, 1, 1, 1], padding='SAME')
     conv12 = batch_norm_layer(conv12, train_phase, 'bn12')
@@ -137,6 +158,11 @@ def resnet_18(x, train_phase):
     conv13 = tf.nn.relu(conv13)
     conv13 += conv11
 
+    # conv13 size fix for next residual add
+    conv13_branch = tf.nn.conv2d(conv13, weights['wc13a'], strides=[1, 2, 2, 1], padding='SAME')
+    conv13_branch = batch_norm_layer(conv13_branch, train_phase, 'bn13a')
+    conv13_branch = tf.nn.relu(conv13_branch)
+
     # output: 7x7         4 3x3 conv, 512, /2 on first
     conv14 = tf.nn.conv2d(conv13, weights['wc14'], strides=[1, 2, 2, 1], padding='SAME')
     conv14 = batch_norm_layer(conv14, train_phase, 'bn14')
@@ -145,7 +171,7 @@ def resnet_18(x, train_phase):
     conv15 = tf.nn.conv2d(conv14, weights['wc15'], strides=[1, 1, 1, 1], padding='SAME')
     conv15 = batch_norm_layer(conv15, train_phase, 'bn15')
     conv15 = tf.nn.relu(conv15)
-    conv15 += conv13 #size mismatch
+    conv15 += conv13_branch #size mismatch
 
     conv16 = tf.nn.conv2d(conv15, weights['wc16'], strides=[1, 1, 1, 1], padding='SAME')
     conv16 = batch_norm_layer(conv16, train_phase, 'bn16')

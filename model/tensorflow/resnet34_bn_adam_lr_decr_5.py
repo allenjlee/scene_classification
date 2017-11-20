@@ -15,11 +15,11 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 # Training Parameters
 learning_rate = 0.000001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 2500
+training_iters = 3000
 step_display = 50
-step_save = 5000
-path_save = 'resnet_34_adam_bn_2/'
-start_from = ''
+step_save = 3000
+path_save = 'resnet_34_adam_bn_5/'
+start_from = 'True'
 
 if not os.path.exists(path_save):
     os.makedirs(path_save)
@@ -343,8 +343,8 @@ saver = tf.train.Saver()
 with tf.Session() as sess:
     # Initialization
     if len(start_from)>1:
-        saver = tf.train.import_meta_graph('-20000.meta')
-        saver.restore(sess, tf.train.latest_checkpoint("resnet_18_3_bn/"))
+        saver = tf.train.import_meta_graph('-5000.meta')
+        saver.restore(sess, tf.train.latest_checkpoint("resnet_34_adam_bn_2/"))
     else:
         sess.run(init)
     print('training_iters', training_iters)
@@ -413,7 +413,7 @@ with tf.Session() as sess:
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
 
     print('Evaluating on test set...')
-    outpt = open('allenlee.resnet34_bn_adam_lr_decr_2.pred.txt', 'w')
+    outpt = open('allenlee.resnet34_bn_adam_lr_decr_1e6.pred.txt', 'w')
     test_num_batch = loader_test.size()
     loader_test.reset()
 

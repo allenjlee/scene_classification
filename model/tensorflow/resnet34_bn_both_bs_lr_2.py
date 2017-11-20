@@ -19,7 +19,7 @@ training_iters = 5000
 step_display = 50
 step_save = 4000
 path_save = 'resnet_34_both_bs_lr_bn_2/'
-start_from = ''
+start_from = 'True'
 
 if not os.path.exists(path_save):
     os.makedirs(path_save)

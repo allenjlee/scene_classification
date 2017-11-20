@@ -18,7 +18,7 @@ learning_rate = 0.0001
 training_iters = 15000
 step_display = 50
 step_save = 5000
-path_save = 'resnet_34_lr_bn/'
+path_save = 'resnet_34_lr_bn_1/'
 start_from = ''
 
 if not os.path.exists(path_save):

@@ -15,10 +15,10 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 # Training Parameters
 learning_rate = 0.0001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 25000
+training_iters = 20000
 step_display = 50
 step_save = 5000
-path_save = 'resnet_34_lr_bn_25k/'
+path_save = 'resnet_34_lr_bn_1/'
 start_from = ''
 
 if not os.path.exists(path_save):
@@ -322,7 +322,7 @@ logits = resnet_34(x, train_phase)
 
 # Define loss and optimizer
 loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits))
-train_optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(loss)
+train_optimizer = tf.train.MomentumOptimizer(learning_rate=learning_rate, momentum=0.9, use_nesterov=True).minimize(loss)
 
 # Evaluate model
 accuracy1 = tf.reduce_mean(tf.cast(tf.nn.in_top_k(logits, y, 1), tf.float32))
@@ -356,9 +356,9 @@ with tf.Session() as sess:
         # Load a batch of training data
         images_batch, labels_batch = loader_train.next_batch(batch_size)
         
-        if step == 20000:
-            sess.run(train_optimizer, feed_dict={learning_rate: 0.00001})
-            print("changed learning_rate")
+        # if step == 10000:
+        #     sess.run(train_optimizer, feed_dict={learning_rate: 0.00001})
+        #     print("changed learning_rate")
 
         if step % step_display == 0:
             print('[%s]:' %(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
@@ -431,8 +431,8 @@ with tf.Session() as sess:
 
         for r in res:
             test_img_lab = test_img_lab + " " + str(r)
-        # print (test_img_lab)
-        outpt.write(test_img_lab + "\n")
+        print (test_img_lab)
+        # outpt.write(test_img_lab + "\n")
     outpt.close()
 
 

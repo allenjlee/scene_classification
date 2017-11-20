@@ -19,7 +19,7 @@ training_iters = 4500
 step_display = 50
 step_save = 1500
 path_save = 'resnet_34_adam_bn_adjusted/'
-start_from = ''
+start_from = 'True'
 
 if not os.path.exists(path_save):
     os.makedirs(path_save)

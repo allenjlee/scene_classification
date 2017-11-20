@@ -6,20 +6,20 @@ from DataLoader import *
 from DataLoader_test import *
 
 # Dataset Parameters
-batch_size = 64
+batch_size = 128
 load_size = 128
 fine_size = 112 # image size, 112x112x3
 c = 3
 data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
-learning_rate = 0.0001
+learning_rate = 0.00001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 15000
+training_iters = 5000
 step_display = 50
-step_save = 5000
-path_save = 'resnet_34_both_bs_lr_bn/'
-start_from = ''
+step_save = 4000
+path_save = 'resnet_34_both_bs_lr_bn_2/'
+start_from = 'True'
 
 if not os.path.exists(path_save):
     os.makedirs(path_save)
@@ -343,7 +343,7 @@ saver = tf.train.Saver()
 with tf.Session() as sess:
     # Initialization
     if len(start_from)>1:
-        saver = tf.train.import_meta_graph('')
+        saver = tf.train.import_meta_graph('-10000.meta')
         saver.restore(sess, tf.train.latest_checkpoint("resnet_34_both_bs_lr_bn/"))
     else:
         sess.run(init)
@@ -415,7 +415,7 @@ with tf.Session() as sess:
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
 
     print('Evaluating on test set...')
-    outpt = open('allenlee.resnet34_bn_lr_decr.pred.txt', 'w')
+    outpt = open('allenlee.resnet34_both_bn_lr_bs.pred.txt', 'w')
     test_num_batch = loader_test.size()
     loader_test.reset()
 

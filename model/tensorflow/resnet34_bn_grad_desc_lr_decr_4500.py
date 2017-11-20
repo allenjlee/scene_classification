@@ -410,7 +410,7 @@ with tf.Session() as sess:
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
 
     print('Evaluating on test set...')
-    outpt = open('allenlee.resnet34_bn_adam_lr_decr_adjustedto4500.pred.txt', 'w')
+    outpt = open('allenlee.resnet34_bn_grad_desc_lr_decr_adjustedto4500.pred.txt', 'w')
     test_num_batch = loader_test.size()
     loader_test.reset()
 

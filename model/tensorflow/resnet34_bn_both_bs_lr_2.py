@@ -343,7 +343,7 @@ saver = tf.train.Saver()
 with tf.Session() as sess:
     # Initialization
     if len(start_from)>1:
-        saver = tf.train.import_meta_graph('')
+        saver = tf.train.import_meta_graph('-10000.meta')
         saver.restore(sess, tf.train.latest_checkpoint("resnet_34_both_bs_lr_bn/"))
     else:
         sess.run(init)
@@ -415,7 +415,7 @@ with tf.Session() as sess:
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
 
     print('Evaluating on test set...')
-    outpt = open('allenlee.resnet34_bn_lr_decr.pred.txt', 'w')
+    outpt = open('allenlee.resnet34_both_bn_lr_bs.pred.txt', 'w')
     test_num_batch = loader_test.size()
     loader_test.reset()
 

@@ -15,9 +15,9 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 # Training Parameters
 learning_rate = 0.00001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 4500
+training_iters = 5000
 step_display = 50
-step_save = 1500
+step_save = 2000
 path_save = 'resnet_34_grad_desc_bn_adjusted/'
 start_from = 'True'
 

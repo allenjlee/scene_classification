@@ -1,3 +1,4 @@
+
 import os, datetime
 import numpy as np
 import tensorflow as tf
@@ -15,10 +16,10 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 # Training Parameters
 learning_rate = 0.000001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 5000
+training_iters = 4000
 step_display = 50
-step_save = 5000
-path_save = 'resnet_34_adam_bn_3/'
+step_save = 3000
+path_save = 'resnet_34_adam_bn_1e6/'
 start_from = 'True'
 
 if not os.path.exists(path_save):

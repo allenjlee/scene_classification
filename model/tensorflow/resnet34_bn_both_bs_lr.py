@@ -354,7 +354,7 @@ with tf.Session() as sess:
 
     while step < training_iters:
         # Load a batch of training data
-        if step == 15000:
+        if step == 10000:
             batch_size = 128
             print("changed batch_size")
             sess.run(train_optimizer, feed_dict={learning_rate: 0.00001})

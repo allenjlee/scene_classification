@@ -13,12 +13,12 @@ c = 3
 data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
-learning_rate = 0.000001
+learning_rate = 0.00001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 2500
+training_iters = 4500
 step_display = 50
-step_save = 5000
-path_save = 'resnet_34_adam_bn_2/'
+step_save = 1500
+path_save = 'resnet_34_adam_bn_adjusted/'
 start_from = ''
 
 if not os.path.exists(path_save):
@@ -354,9 +354,6 @@ with tf.Session() as sess:
 
     while step < training_iters:
         # Load a batch of training data
-        if step == 20000:
-            sess.run(train_optimizer, feed_dict={learning_rate: 0.00001})
-            print("changed learning_rate")
 
         images_batch, labels_batch = loader_train.next_batch(batch_size)
        
@@ -413,17 +410,13 @@ with tf.Session() as sess:
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
 
     print('Evaluating on test set...')
-    outpt = open('allenlee.resnet34_bn_adam_lr_decr_2.pred.txt', 'w')
+    outpt = open('allenlee.resnet34_bn_adam_lr_decr_adjustedto4500.pred.txt', 'w')
     test_num_batch = loader_test.size()
     loader_test.reset()
 
     for j in range(test_num_batch):
         test_img_batch = loader_test.next_batch(1)
         test_img_lab = "test/" + "%08d" % (j+1,) + ".jpg"
-        #print(test_img_batch)i
-        # for img in test_img_batch:
-        #     #calculate logits (aka final layer output)
-        #     #keep running sum of all logits
 
         res = sess.run([top5], feed_dict={x: test_img_batch, train_phase: False})[0][1][0]
 
@@ -431,7 +424,7 @@ with tf.Session() as sess:
 
         for r in res:
             test_img_lab = test_img_lab + " " + str(r)
-        print (test_img_lab)
+        # print (test_img_lab)
         outpt.write(test_img_lab + "\n")
     outpt.close()
 

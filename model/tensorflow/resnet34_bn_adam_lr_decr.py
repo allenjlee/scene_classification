@@ -15,10 +15,10 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 # Training Parameters
 learning_rate = 0.00001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 5000
+training_iters = 2500
 step_display = 50
 step_save = 5000
-path_save = 'resnet_34_adam_bn/'
+path_save = 'resnet_34_adam_bn_2/'
 start_from = ''
 
 if not os.path.exists(path_save):
@@ -413,7 +413,7 @@ with tf.Session() as sess:
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
 
     print('Evaluating on test set...')
-    outpt = open('allenlee.resnet34_bn_adam_lr_decr.pred.txt', 'w')
+    outpt = open('allenlee.resnet34_bn_adam_lr_decr_2.pred.txt', 'w')
     test_num_batch = loader_test.size()
     loader_test.reset()
 

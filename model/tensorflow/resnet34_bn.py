@@ -17,8 +17,8 @@ learning_rate = 0.0001
 # dropout = 0.55 # Dropout, probability to keep units
 training_iters = 20000
 step_display = 50
-step_save = 10000
-path_save = 'resnet_18_3_bn/'
+step_save = 5000
+path_save = 'resnet_18_4_bn/'
 start_from = ''
 
 if not os.path.exists(path_save):

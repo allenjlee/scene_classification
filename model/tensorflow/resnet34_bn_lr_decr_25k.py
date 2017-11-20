@@ -4,6 +4,7 @@ import tensorflow as tf
 from tensorflow.contrib.layers.python.layers import batch_norm
 from DataLoader import *
 from DataLoader_test import *
+from keras import optimizers
 
 # Dataset Parameters
 batch_size = 64

@@ -431,8 +431,8 @@ with tf.Session() as sess:
 
         for r in res:
             test_img_lab = test_img_lab + " " + str(r)
-        print (test_img_lab)
-        # outpt.write(test_img_lab + "\n")
+        # print (test_img_lab)
+        outpt.write(test_img_lab + "\n")
     outpt.close()
 
 

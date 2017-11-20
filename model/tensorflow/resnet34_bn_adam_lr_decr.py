@@ -13,12 +13,12 @@ c = 3
 data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
-learning_rate = 0.0001
+learning_rate = 0.00001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 15000
+training_iters = 5000
 step_display = 50
 step_save = 5000
-path_save = 'resnet_34_both_bs_lr_bn/'
+path_save = 'resnet_34_adam_bn/'
 start_from = ''
 
 if not os.path.exists(path_save):
@@ -343,7 +343,7 @@ saver = tf.train.Saver()
 with tf.Session() as sess:
     # Initialization
     if len(start_from)>1:
-        saver = tf.train.import_meta_graph('')
+        saver = tf.train.import_meta_graph('-20000.meta')
         saver.restore(sess, tf.train.latest_checkpoint("resnet_18_3_bn/"))
     else:
         sess.run(init)
@@ -354,9 +354,7 @@ with tf.Session() as sess:
 
     while step < training_iters:
         # Load a batch of training data
-        if step == 15000:
-            batch_size = 128
-            print("changed batch_size")
+        if step == 20000:
             sess.run(train_optimizer, feed_dict={learning_rate: 0.00001})
             print("changed learning_rate")
 
@@ -415,7 +413,7 @@ with tf.Session() as sess:
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
 
     print('Evaluating on test set...')
-    outpt = open('allenlee.resnet34_bn_lr_decr.pred.txt', 'w')
+    outpt = open('allenlee.resnet34_bn_adam_lr_decr.pred.txt', 'w')
     test_num_batch = loader_test.size()
     loader_test.reset()
 
@@ -433,7 +431,7 @@ with tf.Session() as sess:
 
         for r in res:
             test_img_lab = test_img_lab + " " + str(r)
-        # print (test_img_lab)
+        print (test_img_lab)
         outpt.write(test_img_lab + "\n")
     outpt.close()
 

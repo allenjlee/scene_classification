@@ -358,6 +358,7 @@ with tf.Session() as sess:
         
         if step == 10000:
             sess.run(train_optimizer, feed_dict={learning_rate: 0.00001})
+            print("changed learning_rate")
 
         if step % step_display == 0:
             print('[%s]:' %(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
@@ -412,7 +413,7 @@ with tf.Session() as sess:
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
 
     print('Evaluating on test set...')
-    outpt = open('allenlee.resnet34_bn.pred.txt', 'w')
+    outpt = open('allenlee.resnet34_bn_lr_decr.pred.txt', 'w')
     test_num_batch = loader_test.size()
     loader_test.reset()
 

@@ -6,7 +6,7 @@ from DataLoader import *
 from DataLoader_test import *
 
 # Dataset Parameters
-batch_size = 64
+batch_size = 128
 load_size = 128
 fine_size = 112 # image size, 112x112x3
 c = 3
@@ -15,10 +15,10 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 # Training Parameters
 learning_rate = 0.0001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 22000
+training_iters = 20000
 step_display = 50
 step_save = 1000
-path_save = 'resnet_34_22k_bn/'
+path_save = 'resnet_34_128_bn/'
 start_from = ''
 
 if not os.path.exists(path_save):

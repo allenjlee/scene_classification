@@ -6,7 +6,7 @@ from DataLoader import *
 from DataLoader_test import *
 
 # Dataset Parameters
-batch_size = 128
+batch_size = 64
 load_size = 128
 fine_size = 112 # image size, 112x112x3
 c = 3
@@ -15,7 +15,7 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 # Training Parameters
 learning_rate = 0.00001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 3000
+training_iters = 2900
 step_display = 50
 step_save = 1000
 path_save = 'resnet_34_tuning_2/'
@@ -322,7 +322,7 @@ logits = resnet_34(x, train_phase)
 
 # Define loss and optimizer
 loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits))
-train_optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(loss)
+train_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
 
 # Evaluate model
 accuracy1 = tf.reduce_mean(tf.cast(tf.nn.in_top_k(logits, y, 1), tf.float32))

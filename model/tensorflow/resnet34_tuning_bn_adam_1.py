@@ -13,7 +13,7 @@ c = 3
 data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
-learning_rate = 0.000001
+learning_rate = 0.00001
 # dropout = 0.55 # Dropout, probability to keep units
 training_iters = 2000
 step_display = 50
@@ -322,7 +322,7 @@ logits = resnet_34(x, train_phase)
 
 # Define loss and optimizer
 loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits))
-train_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
+train_optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(loss)
 
 # Evaluate model
 accuracy1 = tf.reduce_mean(tf.cast(tf.nn.in_top_k(logits, y, 1), tf.float32))
@@ -410,7 +410,7 @@ with tf.Session() as sess:
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
 
     print('Evaluating on test set...')
-    outpt = open('allenlee.resnet34_bn_adam_lr_decr_adjustedto4500.pred.txt', 'w')
+    outpt = open('allenlee.resnet34_SGD_bn_tune.pred.txt', 'w')
     test_num_batch = loader_test.size()
     loader_test.reset()
 

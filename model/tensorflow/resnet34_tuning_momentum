@@ -15,7 +15,7 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 # Training Parameters
 learning_rate = 0.00001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 1400
+training_iters = 1600
 step_display = 50
 step_save = 1000
 path_save = 'resnet_34_tuning_moment/'
@@ -343,8 +343,8 @@ saver = tf.train.Saver()
 with tf.Session() as sess:
     # Initialization
     if len(start_from)>1:
-        saver = tf.train.import_meta_graph('-1400.meta')
-        saver.restore(sess, tf.train.latest_checkpoint("resnet_34_tuning_2000_1/"))
+        saver = tf.train.import_meta_graph('-20000.meta')
+        saver.restore(sess, tf.train.latest_checkpoint("resnet_18_3_bn/"))
     else:
         sess.run(init)
     print('training_iters', training_iters)

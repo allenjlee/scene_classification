@@ -4,23 +4,22 @@ import tensorflow as tf
 from tensorflow.contrib.layers.python.layers import batch_norm
 from DataLoader import *
 from DataLoader_test import *
-from keras import optimizers
 
 # Dataset Parameters
-batch_size = 128
+batch_size = 64
 load_size = 128
 fine_size = 112 # image size, 112x112x3
 c = 3
 data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
-learning_rate = 0.0001
+learning_rate = 0.00001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 20000
+training_iters = 5000
 step_display = 50
 step_save = 1000
-path_save = 'resnet_34_128_bn/'
-start_from = ''
+path_save = 'resnet_34_tuning_2000_finer_2/'
+start_from = 'True'
 
 if not os.path.exists(path_save):
     os.makedirs(path_save)
@@ -323,7 +322,7 @@ logits = resnet_34(x, train_phase)
 
 # Define loss and optimizer
 loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits))
-train_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
+train_optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(loss)
 
 # Evaluate model
 accuracy1 = tf.reduce_mean(tf.cast(tf.nn.in_top_k(logits, y, 1), tf.float32))
@@ -344,8 +343,8 @@ saver = tf.train.Saver()
 with tf.Session() as sess:
     # Initialization
     if len(start_from)>1:
-        saver = tf.train.import_meta_graph('')
-        saver.restore(sess, tf.train.latest_checkpoint("resnet_18_3_bn/"))
+        saver = tf.train.import_meta_graph('-5000.meta') # meta where you want to start
+        saver.restore(sess, tf.train.latest_checkpoint("resnet_34_tuning_2/")) # path to checkpoint
     else:
         sess.run(init)
     print('training_iters', training_iters)
@@ -355,8 +354,9 @@ with tf.Session() as sess:
 
     while step < training_iters:
         # Load a batch of training data
+
         images_batch, labels_batch = loader_train.next_batch(batch_size)
-        
+       
         if step % step_display == 0:
             print('[%s]:' %(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
 
@@ -410,17 +410,13 @@ with tf.Session() as sess:
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
 
     print('Evaluating on test set...')
-    outpt = open('allenlee.resnet34_128_bn.pred.txt', 'w')
+    outpt = open('allenlee.2_resnet34_SGD_bn_tune.pred.txt', 'w')
     test_num_batch = loader_test.size()
     loader_test.reset()
 
     for j in range(test_num_batch):
         test_img_batch = loader_test.next_batch(1)
         test_img_lab = "test/" + "%08d" % (j+1,) + ".jpg"
-        #print(test_img_batch)i
-        # for img in test_img_batch:
-        #     #calculate logits (aka final layer output)
-        #     #keep running sum of all logits
 
         res = sess.run([top5], feed_dict={x: test_img_batch, train_phase: False})[0][1][0]
 
@@ -428,7 +424,7 @@ with tf.Session() as sess:
 
         for r in res:
             test_img_lab = test_img_lab + " " + str(r)
-        print (test_img_lab)
+        # print (test_img_lab)
         outpt.write(test_img_lab + "\n")
     outpt.close()
 

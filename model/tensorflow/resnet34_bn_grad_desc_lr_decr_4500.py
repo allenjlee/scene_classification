@@ -6,18 +6,18 @@ from DataLoader import *
 from DataLoader_test import *
 
 # Dataset Parameters
-batch_size = 64
+batch_size = 128
 load_size = 128
 fine_size = 112 # image size, 112x112x3
 c = 3
 data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
-learning_rate = 0.00001
+learning_rate = 0.000001
 # dropout = 0.55 # Dropout, probability to keep units
-training_iters = 4500
+training_iters = 1000
 step_display = 50
-step_save = 1500
+step_save = 1000
 path_save = 'resnet_34_grad_desc_bn_adjusted/'
 start_from = 'True'
 
@@ -343,8 +343,8 @@ saver = tf.train.Saver()
 with tf.Session() as sess:
     # Initialization
     if len(start_from)>1:
-        saver = tf.train.import_meta_graph('-20000.meta')
-        saver.restore(sess, tf.train.latest_checkpoint("resnet_18_3_bn/"))
+        saver = tf.train.import_meta_graph('-1500.meta')
+        saver.restore(sess, tf.train.latest_checkpoint("resnet_34_grad_desc_bn_adjusted/"))
     else:
         sess.run(init)
     print('training_iters', training_iters)
@@ -410,7 +410,7 @@ with tf.Session() as sess:
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
 
     print('Evaluating on test set...')
-    outpt = open('allenlee.resnet34_bn_grad_desc_lr_decr_adjustedto4500.pred.txt', 'w')
+    outpt = open('allenlee.resnet34_tuning.pred.txt', 'w')
     test_num_batch = loader_test.size()
     loader_test.reset()
 

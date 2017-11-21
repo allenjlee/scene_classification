@@ -117,8 +117,8 @@ def resnet_50(x, train_phase):
 
     #  side convolution
     res2_branch = tf.nn.conv2d(pool1, weights['wc2a'], strides=[1, 1, 1, 1], padding='SAME')
-    res2_branch = batch_norm_layer(conv2a, train_phase, 'bn2a')
-    res2_branch = tf.nn.relu(conv2a)
+    res2_branch = batch_norm_layer(res2_branch, train_phase, 'bn2a')
+    res2_branch = tf.nn.relu(res2_branch)
 
     # output: 56x56       9 convolutions [1, 1, 64], [3, 3, 64], [1, 1, 256]
     conv2 = tf.nn.conv2d(pool1, weights['wc2'], strides=[1, 1, 1, 1], padding='SAME')
